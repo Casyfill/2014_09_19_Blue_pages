@@ -35,6 +35,19 @@ class person:
 		if len(result)!=0:
 			self.email=', '.join(result)
 
+	def guessWeb(self):
+		result = []
+		for lin in self.rawText:
+			line.replace(' .','').strip()
+			for end in ['.ru', '.com', '.org', , '.io', '.com', '.edu', '.net']:
+				if end in line:	
+					words = line.split()
+					for word in words:
+						if end in word:
+							result.append(word)
+		if len(result)!=0:
+			self.web=', '.join(result)
+
 	def guessPosition(self):
 		self.position = self.rawText[0]
 
