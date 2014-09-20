@@ -1,96 +1,58 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
 
+import sys, csv		
 
-class person:
-	category = ''
-	title = 'n/a'
-	first  = 'n/a'
-	last  = 'n/a'
-	organization  = 'n/a'
-	address  = 'n/a'
-	poBox  = 'n/a'
-	city  = 'n/a'
-	state  = 'n/a'
-	Zip  = 'n/a'
-	email  = 'n/a'
-	web = 'n/a'
-	rawText = []
+modulePath = "/Users/casy/Dropbox/My_Projects/2014_09_19_Blue_pages/code/misc/"	
+sys.path.append(modulePath)
+from misc import getFiles, textChunker
+from person import person
+
+source ="/Users/casy/Dropbox/My_Projects/2014_09_19_Blue_pages/raw_txt/"
+result ="/Users/casy/Dropbox/My_Projects/2014_09_19_Blue_pages/raw_csv/raw.csv" 
+
+headersList = [
+	'category',
+	'position',
+	'title',
+	'first' ,
+	'last' ,
+	'organization' ,
+	'address' ,
+	'poBox' ,
+	'city' ,
+	'state' ,
+	'Zip' ,
+	'email' ,
+	'web',
+	'rawText']
+
+with open(result,'wb') as writeFile:
+	wD = csv.DictWriter(writeFile, headersList,restval='', extrasaction='raise', dialect='excel')
+	wD.writeheader()
+
+	personList =[]
+
+	for f in getFiles(source):
+		chapter = f.split('/')[-1].replace('.txt','')
+		print chapter.upper()
+		print
 	
-	def __init__(self, raw, cat='?'):
-		self.rawText = raw
-		self.category = cat
+		with open(f, 'rb') as text:
+			chunks = textChunker(text)
+			for chunk in chunks:
+				p = person(chunk)
+				p.category = chapter
+				p.analyse()
+				personList.append(p)
+				p.plotRaw()
+	
+	for person in personList:
+		wD.writerow(person.asDict())
 
-	def guessEmail(self):
-		result = []
-		for line in self.rawText:
-			if '@' in line:
-				line.replace(' .','').trim()
-				ar = line.split()
-		
-				for mail in ar:
-					if '@' in mail:
-						result.append(mail)
-		if len(result)!=0:
-			self.email=', '.join(result)
-
-	def guessTitle(self):
-		self.title = self.rawText[0]
-
-	def guessName(self):
-		self.title = self.rawText[1]
-
-	def plotRaw(self):
-		print 'PERSON RAW'
-
-		for line in self.rawText:
-			print 'p: ', line
-		print
-		print
-		print 
+print 'done!'
 
 
-				
-
-path = "/Users/f.kac/Dropbox (RN&IA'N)/My_Projects/Blue_pages/data/C1_cleaned.txt"
-
-personList = []
-
-with open(path,'rb') as readFile:	
-	mode = False
-	personText=[]
-
-	for line in readFile:
-		line=line.decode('utf-8').replace(' .','.').strip()
-		# print line
-		if len(line)!=0:
-			if mode==False:
-				personText=[]
-				personText.append(line)
-				mode=True
-			else:
-				# print '!!'
-				personText.append(line)
-		else:
-			# print 'new person'
-			if mode==True:
-				personList.append( person(personText))
-				mode = False
-			else:
-				pass
 
 
-for p in personList:
-	# print
-	# print
-	# print 'persona'
-	# for line in p:
-	# 	print line
-	p.guessTitle()
-	p.guessName()
-	p.guessEmail()
-
-	print 'email:', p.email()
-
-	p.plotRaw()
-
-		
 
