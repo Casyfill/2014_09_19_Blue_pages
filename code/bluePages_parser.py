@@ -34,7 +34,7 @@ with open(result,'wb') as writeFile:
 	personList =[]
 
 	for f in getFiles(source):
-		chapter = f.split('/')[-1].replace('.txt','')
+		chapter = f.split('/')[-1].replace('.txt','').replace('_',' ')
 		print chapter.upper()
 		print
 	

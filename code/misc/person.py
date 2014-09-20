@@ -37,14 +37,16 @@ class person:
 
 	def guessWeb(self):
 		result = []
-		for lin in self.rawText:
+		words = []
+		for line in self.rawText:
 			line.replace(' .','').strip()
-			for end in ['.ru', '.com', '.org', '.io', '.com', '.edu', '.net']:
-				if end in line:	
-					words = line.split()
-					for word in words:
-						if end in word:
-							result.append(word)
+			words+=line.split(' ')
+		
+		for word in words:
+			d = ['.ru', '.com', '.org', '.io', '.com', '.edu', '.net']
+			if any([True for x in d if x in word]) and '@' not in word:	
+				result.append(word)
+					
 		if len(result)!=0:
 			self.web=', '.join(result)
 
@@ -52,13 +54,21 @@ class person:
 		self.position = self.rawText[0]
 
 	def guessName(self):
-		self.title = self.rawText[1]
+		names = self.rawText[1].split(' ')
+		self.last = names[-1]
+		self.first = ' '.join(names[:-1])
+
+	def guessTitle(self):
+		self.title = self.rawText[2]
+		
 
 	def analyse(self):
 		# make all guessings in one command
 		self.guessPosition()
 		self.guessName()
 		self.guessEmail()
+		self.guessTitle()
+		self.guessWeb()
 
 	def asDict(self):
 		return {'category':self.category ,
