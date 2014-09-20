@@ -39,7 +39,7 @@ class person:
 		result = []
 		for lin in self.rawText:
 			line.replace(' .','').strip()
-			for end in ['.ru', '.com', '.org', , '.io', '.com', '.edu', '.net']:
+			for end in ['.ru', '.com', '.org', '.io', '.com', '.edu', '.net']:
 				if end in line:	
 					words = line.split()
 					for word in words:
