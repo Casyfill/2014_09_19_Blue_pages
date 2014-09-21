@@ -25,7 +25,10 @@ headersList = [
 	'Zip' ,
 	'email' ,
 	'web',
-	'rawText']
+	'fax',
+	'phone',
+	'rawText'
+	]
 
 with open(result,'wb') as writeFile:
 	wD = csv.DictWriter(writeFile, headersList,restval='', extrasaction='raise', dialect='excel')

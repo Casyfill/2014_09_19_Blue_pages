@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
-
+import re
 
 class person:
 	category = 'n/a'
@@ -16,6 +16,8 @@ class person:
 	Zip  = 'n/a'
 	email  = 'n/a'
 	web = 'n/a'
+	fax = 'n/a'
+	phone = 'n/a'
 	rawText = []
 	
 	def __init__(self, raw):
@@ -60,6 +62,27 @@ class person:
 
 	def guessTitle(self):
 		self.title = self.rawText[2]
+
+	def guessPhones(self):
+		
+		words = [word for line in self.rawText for word in line.replace(' .','').replace('fax','FAX').strip().split()]
+
+		phonePattern = re.compile(r'^(\d{3})-(\d{3})-(\d{4})')
+		
+		if 'FAX' in words:
+			i = words.index('FAX')-1
+			if phonePattern.match(words[i]):
+				self.fax= words[i]
+				words.pop(i)
+
+
+		result = [x for x in words if phonePattern.match(x)]
+
+		if len(result)!=0:
+			self.phone=', '.join(result)
+
+
+
 		
 
 	def analyse(self):
@@ -69,6 +92,7 @@ class person:
 		self.guessEmail()
 		self.guessTitle()
 		self.guessWeb()
+		self.guessPhones()
 
 	def asDict(self):
 		return {'category':self.category ,
@@ -84,6 +108,8 @@ class person:
 				'Zip':self.Zip ,
 				'email':self.email ,
 				'web':self.web ,
+				'fax': self.fax,
+				'phone': self.phone,
 				'rawText':'|'.join(self.rawText)}
 
 	def plotRaw(self):
