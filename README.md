@@ -5,6 +5,8 @@ Blue notes parsing script for personal use
 
 **NOTE: for computer-readable (not scanned) pdfs I totally recomend** *[tabula](http://tabula.nerdpower.org/)*
 
+
+
 repo consist three main folders:
 
  - raw input - pdf and its recognition as a word text
