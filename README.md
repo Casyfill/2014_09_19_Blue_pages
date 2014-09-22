@@ -21,7 +21,10 @@ at this stage I am writing separate algorithms to recognize different data in te
 - [X]  Phone and fax
 - [X]  Name and surname
 	- [ ] solve ', Jn.' problem
-- [ ]  adress, state, index
+- [ ]  city
+- [ ]  adress
+- [X]  state
+- [X]  index
 - [X]  PoBOX
 - [ ]  title
 - [ ]  Multipersonel chunks
