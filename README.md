@@ -22,8 +22,9 @@ at this stage I am writing separate algorithms to recognize different data in te
 - [X]  Name and surname
 	- [ ] solve ', Jn.' problem
 - [ ]  adress, state, index
-- [ ]  PoBOX
+- [X]  PoBOX
 - [ ]  title
+- [ ]  Multipersonel chunks
 
 raw pdf and word can be found via those links:
 [blue_pages.doc](https://app.box.com/s/i8brubgny2nxtoqbnerc)

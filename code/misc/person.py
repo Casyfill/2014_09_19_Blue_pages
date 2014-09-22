@@ -45,7 +45,7 @@ class person:
 			words+=line.split(' ')
 		
 		for word in words:
-			d = ['.ru', '.com', '.org', '.io', '.com', '.edu', '.net']
+			d = ['.ru', '.com', '.org', '.io', '.com', '.edu', '.net', '.gov','.us','.ok']
 			if any([True for x in d if x in word]) and '@' not in word:	
 				result.append(word)
 					
@@ -81,7 +81,22 @@ class person:
 		if len(result)!=0:
 			self.phone=', '.join(result)
 
-
+	def guessPOBox(self):
+		words = [word for line in self.rawText for word in line.replace(' .','').strip().split()]
+		
+		# boxList = ['PO', 'Box', 'box', 'Drawer']
+		# if any(True for x in boxList if x in words ):
+		
+		if 'PO' in words:
+			# print 'PO detected'
+			POpattern = re.compile(r'\d+')
+			i = words.index('PO') +2
+			
+			if POpattern.match(words[i]):
+				self.poBox= words[i]
+			else: print self.first, ' ', self.last, ': PO_box conflict!'
+			
+				
 
 		
 
@@ -93,6 +108,7 @@ class person:
 		self.guessTitle()
 		self.guessWeb()
 		self.guessPhones()
+		self.guessPOBox()
 
 	def asDict(self):
 		return {'category':self.category ,
@@ -121,5 +137,38 @@ class person:
 		print
 		print
 
+	def plotParsed(self):
+		print
+		print 'organization: ', self.organization
+		print 'name: ', self.first, ' ', self.last
+		print 'title: ', self.title
+		print 'position: ', self.position
+		print 'poBox: ', self.poBox
+		print 'fax: ', self.fax
+		print 'phones: ', self.phone
+		print 'email: ', self.email
+		print 'web: ', self.web
+
+
+
+
 
 	
+if __name__ ==' __main__':
+
+	r = ['American Fidelity Assurance Co',
+	'Bob Fleet',
+	'PO Box 25523',
+	'Oklahoma City OK ',
+	'73125 ',
+	'405-523-5309',
+	'405-523-5425',
+	'bob.fleet@af-group .com www.af-group.com']
+
+
+	perk  = person(r)
+	perk.analyse()
+
+	perk.plotParsed()
+
+

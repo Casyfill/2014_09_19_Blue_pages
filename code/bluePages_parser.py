@@ -48,7 +48,7 @@ with open(result,'wb') as writeFile:
 				p.category = chapter
 				p.analyse()
 				personList.append(p)
-				p.plotRaw()
+				p.plotParsed()
 	
 	for person in personList:
 		wD.writerow(person.asDict())
