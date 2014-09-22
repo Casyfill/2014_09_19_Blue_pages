@@ -28,7 +28,7 @@ class person:
 		result = []
 		for line in self.rawText:
 			if '@' in line:
-				line.replace(' .','').strip()
+				line.replace(' .','').replace(' .','').strip()
 				ar = line.split()
 		
 				for mail in ar:
@@ -61,7 +61,8 @@ class person:
 		self.first = ' '.join(names[:-1])
 
 	def guessTitle(self):
-		self.title = self.rawText[2]
+		if len(self.rawText)>2:
+			self.title = self.rawText[2]
 
 	def guessPhones(self):
 		
@@ -173,6 +174,7 @@ class person:
 		if any(True for x in States.keys() if x in words ):
 			
 			indexPattern = re.compile(r'\d{5}')
+			
 			for sc in States.keys():
 				if sc in words:
 					self.state = States[sc]
@@ -181,6 +183,24 @@ class person:
 
 					if indexPattern.match(words[i]):
 						self.Zip= words[i]
+
+					# ADRESS
+					if 'PO' in words:
+						j = words.index('PO') +3
+						addr = words[j:i-1]
+					else:
+						bldPattern = re.compile(r'\d+')
+						addr = []
+						cntr = i-2
+						while True:
+							if not bldPattern.match(words[cntr]):
+								addr.insert(0, words[cntr])
+								cntr-=1
+							else:
+								addr.insert(0, words[cntr])
+								break
+					if len(addr)>0:self.address = ' '.join(addr)
+
 
 
 		
@@ -244,6 +264,7 @@ class person:
 		print 'web: ', self.web
 		print 'state: ', self.state
 		print 'index: ', self.Zip
+		print 'address: ', self.address
 
 
 
